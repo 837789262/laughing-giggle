@@ -1,0 +1,68 @@
+import random
+import time
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+
+# 用你自己的电子邮件和密码替换
+email = "tester1"
+password = "tester11"
+
+# 设置Chrome驱动程序
+driver = webdriver.Chrome()
+
+# 打开飞书网站
+driver.get("https://www.feishu.cn/")
+
+# 点击登录按钮
+login_button = driver.find_element(By.XPATH, "//a[@class='nav-login-btn']")
+login_button.click()
+
+# 切换到登录iframe
+driver.switch_to.frame(driver.find_element(By.XPATH, "//iframe[@id='login-iframe']"))
+
+# 输入电子邮件和密码
+email_field = driver.find_element(By.XPATH, "//input[@name='email']")
+email_field.send_keys(email)
+
+password_field = driver.find_element(By.XPATH, "//input[@name='password']")
+password_field.send_keys(password)
+
+# 点击登录按钮
+login_button = driver.find_element(By.XPATH, "//button[@type='submit']")
+login_button.click()
+
+# 等待页面加载
+time.sleep(5)
+
+# 点击联系人按钮
+contacts_button = driver.find_element(By.XPATH, "//a[@data-testid='sidebar-contacts']")
+contacts_button.click()
+
+# 等待页面加载
+time.sleep(5)
+
+# 搜索tester2
+search_field = driver.find_element(By.XPATH, "//input[@data-testid='search-input']")
+search_field.send_keys("tester2")
+search_field.send_keys(Keys.RETURN)
+
+# 等待页面加载
+time.sleep(5)
+
+# 点击用户
+user_button = driver.find_element(By.XPATH, "//div[@class='contact-item__name' and text()='tester2']")
+user_button.click()
+
+# 等待页面加载
+time.sleep(5)
+
+# 发送10条随机消息
+for i in range(10):
+    message_field = driver.find_element(By.XPATH, "//textarea[@data-testid='input']")
+    message_field.send_keys(str(random.randint(0, 100)))
+    message_field.send_keys(Keys.RETURN)
+    time.sleep(1)
+
+# 关闭浏览器
+driver.quit()
